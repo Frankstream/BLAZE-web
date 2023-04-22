@@ -1,122 +1,82 @@
 <!DOCTYPE html>
-<head><title></title>
-
-<style>
-
-* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: "Work Sans", sans-serif;
-  font-size: 21px;
-}
-
-.headings_color {
-  color: #4f81bd;
-}
-
-h1 {
-  font-size: 3.5rem;
-  line-height: 1.1em;
-  padding-bottom: 1em;
-}
-.hero {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: center;
-  background: rgba(14, 14, 14, 0.85);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-}
-
-.content {
-  text-align: center;
-  margin-top: 7em;
-  maximum-width: 350px;
-  min-width: 50%;
-}
-
-/* .video-bg {
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 100%;
-  min-height: 100%;
-} */
-
-.video-bg {
-  position: fixed;
-  z-index: -1;
-}
-
-@media (min-aspect-ratio: 16/9) {
-  .video-bg {
-    width: 100%;
-    height: auto;
-  }
-}
-@media (max-aspect-ratio: 16/9) {
-  .video-bg {
-    width: auto;
-    height: 100%;
-  }
-}
-
-@media (max-width: 767px) {
-  .video-bg {
-    display: none;
-  }
-  body {
-    background: url("https://images.pexels.com/photos/3783471/pexels-photo-3783471.jpeg?cs=srgb&dl=pexels-dmitry-demidov-3783471.jpg&fm=jpg");
-    background-size: cover;
-  }
-  .content {
-    margin-top: 2em;
-  }
-  .radio-player {
-    margin: 0 5px;
-  }
-}
-
-</style>
-
-
+<html lang="de">
+<head>
+	<title>Radios Portuguesas</title>
 </head>
+
 <body>
+	<script src="https://hls-js.netlify.com/dist/hls.js"></script>
+	<script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
+	<link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css" />
+	<center>
+		<h1>Radios Portuguesas</h1>
+		<audio height="400" id="video" controls></audio>
+		
+<div id="selectBox">
+<select id="senderAuswahl" onchange="senderWechseln()" autofocus="autofocus">
+	<option value="">Escolha a Radio</option>
+	<option value="https://livefastly-webs.europafm.com/europafm/audio/master.m3u8">M80</option>
+	<option value="">Antena 1</option>
+	<option value="https://livefastly-webs.europafm.com/europafm/audio/master.m3u8">M80 Dance</option>
+	<option value="https://media1.mcr.iol.pt/wrm80/m80disco.stream/playlist.m3u8">M80 Disco</option>
+	<option value="https://media2.mcr.iol.pt/wrm80/m8090.stream/playlist.m3u8">M80 90s</option>
+	<option value="https://media1.mcr.iol.pt/wrm80/m80pop.stream/playlist.m3u8">M80 Pop</option>
+	<option value="https://streaming-live.rtp.pt/liveradio/antena280a/playlist.m3u8">Antena 2</option>
+	<option value="https://media1.mcr.iol.pt/wrm80/m8080.stream/playlist.m3u8">M80 80s</option>
+	<option value="https://media2.mcr.iol.pt/wrm80/m8070.stream/playlist.m3u8">M80 70s</option>
+	<option value="https://streaming-live.rtp.pt/liveradio/rdpint80a/playlist.m3u8">RDP Internacional</option>
+	<option value="https://media2.mcr.iol.pt/wrm80/m80ballads.stream/playlist.m3u8">M80 Ballads</option>
+	<option value="https://384398c.ha.azioncdn.net/primary/brasilia.sdp/playlist.m3u8">Rede Aleluia</option>
+	<option value="https://media2.mcr.iol.pt/wrm80/m80soul.stream/playlist.m3u8">M80 Soul</option>
+	<option value="https://streaming-live.rtp.pt/liveradio/rdpafrica80a/playlist.m3u8">RDP Africa</option>
+	<option value="https://media1.mcr.iol.pt/wrm80/m80rock.stream/playlist.m3u8">M80 Rock</option>
+	<option value="https://player-ssl.kshost.com.br:9126/live">M80 60s</option>
+	
+	
+	
+	
+	
+	
+	
+</select>
+<span id="info5"></span>
+</div>
 
-
-    <div class="hero">
-      <div class="content">
-        <h1 class="headings_color">Palmos Radio</h1>
-        <div class="radio-player">
-          <iframe
-            src="https://www.radioking.com/widgets/player/player.php?id=356056&c=%231e7fcb&c2=%23ffffff&f=h&i=0&ii=null&p=0&s=0&li=0&popup=0&plc=NaN&h=undefined&l=100&a=0&v=2&fullsize"
-            style="
-              border-radius: 5px;
-              width: 100%;
-              max-height: 145px;
-              min-width: 270px;
-              overflow: auto; 
-            "
-            frameborder="0"
-          ></iframe>
-        </div>
-      </div>
-      <video class="video-bg" autoplay="true" muted="true" loop="true">
-        <source
-          src="https://livefastly-webs.europafm.com/europafm/audio/master.m3u8"
-          type="video/mp4"
-        ></source>
-      </video>
-    </div>
-
+	</center>
+	<script>
+		function senderWechseln() {
+		
+		if(Hls.isSupported()) {
+			var video = document.getElementById('video');
+			var hls = new Hls();
+			
+			var senderURL = document.getElementById("senderAuswahl").value;
+			var senderName = document.getElementById("senderAuswahl");
+			var i = senderName.selectedIndex;
+			var y = senderName.options[i].text;
+			document.getElementById("info5").innerHTML = "Sender: " + y;
+			const source = senderURL;
+			//const source = "https://mcdn.daserste.de/daserste/de/master.m3u8";
+			//const source = "http://iptv.iptivihd.com:8000/live/b6EMHaaZ0G/CA2DrtGvi2/1126.m3u8";
+			
+			hls.loadSource(source);
+			hls.attachMedia(video);
+			hls.on(Hls.Events.MANIFEST_PARSED,function() {
+				video.play();
+			});
+		}
+		// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+		// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
+		// This is using the built-in support of the plain video element, without using hls.js.
+		else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+			video.src = 'https://zdf-hls-01.akamaized.net/hls/live/2002460/de/high/master.m3u8';
+			video.addEventListener('canplay',function() {
+				video.play();
+			});
+		}
+		
+		}
+	</script>
 
 </body>
 </html>
